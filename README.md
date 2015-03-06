@@ -1,7 +1,7 @@
 # quandl4j-web-master
 quandl4j ehcache support
 
-JSF2.2 web application deployed with maven, wich support ehcache .
+JSF2.2 web application deployed with maven, which support ehcache .
 You can add quandl4j as dependency and create your application.
 You can find already configured ehcache.xml file.
 Please have a look following configuration in it :
