@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"    
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"     
+      xmlns:jsf="http://xmlns.jcp.org/jsf"         
+      xmlns:passthrough="http://xmlns.jcp.org/jsf/passthrough"     
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">     
+
+    <f:view contracts="default" transient="false">
+        <ui:composition template="/template.xhtml">              
+            <ui:define name="content">                                 
+                <div class="container">
+                    <h:form prependId="false">
+                        <p:growl/>
+                         <hr/>
+                        <H2>JSF2.2/ehcache/Quandl4j Web</H2>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="concept" class="col-sm-3 control-label">Simbol</label>
+                                <div class="col-sm-9">
+                                    <h:inputText required="true" id="simbol" 
+                                                 style="width: 300px" styleClass="form-control" value="#{quandlFinderBean.simbol}">                                                
+                                        <f:validateLength maximum="5"/>
+                                    </h:inputText>
+                                </div>
+                            </div>    
+                             <div class="form-group">
+                              <hr/>
+                            </div> 
+                            <div class="form-group">
+                                <label for="concept" class="col-sm-3 control-label">Date start</label>
+                                <div class="col-sm-9">
+                                    <p:calendar id="startDate" required="true" pattern="yyyy-MM-dd" value="#{quandlFinderBean.startDate}"/>
+                                </div>
+                            </div>    
+                            <h:commandButton value="Search"  styleClass="btn btn-danger" action="#{quandlFinderBean.doCall()}"/>
+                             <h:outputText value=" "/>
+                            <h:commandButton value="Clear"  styleClass="btn btn-info" immediate="true" action="#{quandlFinderBean.doClear()}"/>
+                        </div>
+                        <hr/>
+                        <br/><br/><br/><br/>
+                        <div class="col-sm-8">               
+                            <p:dataTable var="list" value="#{quandlFinderBean.finalList}" rendered="#{not empty quandlFinderBean.finalList}" rows="30"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15">
+
+
+                                <p:column headerText="Open">
+                                    <h:outputText value="#{list.open}" />
+                                </p:column>
+
+                                <p:column headerText="Close">
+                                    <h:outputText value="#{list.close}" />
+                                </p:column>
+
+                                <p:column headerText="High">
+                                    <h:outputText value="#{list.high}" />
+                                </p:column>
+                                <p:column headerText="Low">
+                                    <h:outputText value="#{list.low}" />
+                                </p:column>
+                            </p:dataTable>
+
+                        </div>
+                    </h:form>    
+
+
+
+
+                </div>
+            </ui:define>
+        </ui:composition>
+    </f:view>
+</html>
