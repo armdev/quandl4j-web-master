@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -34,13 +35,19 @@ public class QuandlFinderBean implements Serializable {
     @ManagedProperty("#{cacheHandler}")
     private CacheHandler cacheHandler = null;
     private String simbol;
-    private Date startDate ;
-    private List<Quandl> finalList = new ArrayList<>();
+    private Date startDate;
+    private List<Quandl> finalList = null;
 
     public QuandlFinderBean() {
+
     }
 
-    public List<Quandl> getFinalList() {      
+    @PostConstruct
+    public void init() {
+        finalList = new ArrayList<>();
+    }
+
+    public List<Quandl> getFinalList() {
         return finalList;
     }
 
@@ -50,14 +57,9 @@ public class QuandlFinderBean implements Serializable {
 
     public void setFinalList(List<Quandl> finalList) {
         this.finalList = finalList;
-    }
+    }//AAPL2016-04-01
 
-    public static void main(String args[]) {
-        QuandlFinderBean bean = new QuandlFinderBean();
-        bean.findList();
-    }
-
-    public List<Quandl> findList() {
+    private List<Quandl> findList(String simbol, String searchKey) {
         QuandlSession quandlSession = QuandlSession.create();
         Quandl quandl = null;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -67,59 +69,58 @@ public class QuandlFinderBean implements Serializable {
         String datesearch = dateFormat.format(cal.getTime());
         String[] aaa = datesearch.split("-");
         LocalDate RECENTISH_DATE = LocalDate.of(Integer.valueOf(aaa[0]), Integer.valueOf(aaa[1]), Integer.valueOf(aaa[2]));
-        List<Quandl> cacheList = (List<Quandl>) cacheHandler.getQuandlListFromCache(simbol + datesearch);
-        if (cacheList == null) {
-            //;
-            try {
-                TabularResult tabularResult = quandlSession.getDataSet(DataSetRequest.Builder.of("WIKI/" + simbol).withStartDate(RECENTISH_DATE).build());
-                Iterator<Row> list = tabularResult.iterator();
+        //  List<Quandl> cacheList = (List<Quandl>) cacheHandler.getQuandlListFromCache(searchKey);
+        // if (cacheList == null) {
+        //;
+        try {
+            TabularResult tabularResult = quandlSession.getDataSet(DataSetRequest.Builder.of("WIKI/" + simbol).withStartDate(RECENTISH_DATE).build());
+            Iterator<Row> list = tabularResult.iterator();
 
-                while (list.hasNext()) {
-                    Row r = list.next();
-                    quandl = new Quandl();
-                    System.out.println("FOUND!!!! ");
-                    quandl.setDate(r.getString("Date"));
-                    quandl.setOpen(r.getString("Open"));
-                    quandl.setHigh(r.getString("High"));
-                    quandl.setLow(r.getString("Low"));
-                    if (r.getString("Close") != null) {
-                        quandl.setClose(r.getString("Close"));
-                    }
-                    if (r.getString("Volume") != null) {
-                        quandl.setVolume(r.getString("Volume"));
-                    }
-                    if (r.getString("Ex-Dividend") != null) {
-                        quandl.setEx_Dividend(r.getString("Ex-Dividend"));
-                    }
-                    if (r.getString("Split Ratio") != null) {
-                        quandl.setSplitRatio(r.getString("Split Ratio"));
-                    }
-                    if (r.getString("Adj. Open") != null) {
-                        quandl.setAdjOpen(r.getString("Adj. Open"));
-                    }
-                    if (r.getString("Adj. High") != null) {
-                        quandl.setAdjHigh(r.getString("Adj. High"));
-                    }
-                    if (r.getString("Adj. Low") != null) {
-                        quandl.setAdjLow(r.getString("Adj. Low"));
-                    }
-                    if (r.getString("Adj. Close") != null) {
-                        quandl.setAdjClose(r.getString("Adj. Close"));
-                    }
-                    if (r.getString("Adj. Volume") != null) {
-                        quandl.setAdjVolume(r.getString("Adj. Volume"));
-                    }
-                    System.out.println("Open: " + quandl.getOpen());
-                    System.out.println("quandl: " + quandl);
-                    System.out.println("finalList: " + finalList);
-                    finalList.add(quandl);
+            while (list.hasNext()) {
+                Row r = list.next();
+                quandl = new Quandl();
+                // System.out.println("FOUND!!!! ");
+                quandl.setDate(r.getString("Date"));
+                quandl.setOpen(r.getString("Open"));
+                quandl.setHigh(r.getString("High"));
+                quandl.setLow(r.getString("Low"));
+                if (r.getString("Close") != null) {
+                    quandl.setClose(r.getString("Close"));
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (r.getString("Volume") != null) {
+                    quandl.setVolume(r.getString("Volume"));
+                }
+                if (r.getString("Ex-Dividend") != null) {
+                    quandl.setEx_Dividend(r.getString("Ex-Dividend"));
+                }
+                if (r.getString("Split Ratio") != null) {
+                    quandl.setSplitRatio(r.getString("Split Ratio"));
+                }
+                if (r.getString("Adj. Open") != null) {
+                    quandl.setAdjOpen(r.getString("Adj. Open"));
+                }
+                if (r.getString("Adj. High") != null) {
+                    quandl.setAdjHigh(r.getString("Adj. High"));
+                }
+                if (r.getString("Adj. Low") != null) {
+                    quandl.setAdjLow(r.getString("Adj. Low"));
+                }
+                if (r.getString("Adj. Close") != null) {
+                    quandl.setAdjClose(r.getString("Adj. Close"));
+                }
+                if (r.getString("Adj. Volume") != null) {
+                    quandl.setAdjVolume(r.getString("Adj. Volume"));
+                }
+                //  System.out.println("Open: " + quandl.getOpen());
+                //  System.out.println("quandl: " + quandl);
+                //  System.out.println("finalList: " + finalList);
 
+                finalList.add(quandl);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
+        //}
         return finalList;
     }
 
@@ -130,19 +131,29 @@ public class QuandlFinderBean implements Serializable {
             cal.setTime(startDate);
             //dateFormat.format(startDate);
             String datesearch = dateFormat.format(cal.getTime());
-            List<Quandl> cacheList = (List<Quandl>) cacheHandler.getQuandlListFromCache(simbol + datesearch);
-             System.out.println("#Cache List  " +cacheList);
-            if (cacheList == null) {
-                finalList = this.findList();                //
-                if (!finalList.isEmpty()) {
-                    System.out.println("#Put into cache  ");
-                    cacheHandler.putQuandlListToCache(simbol + datesearch, finalList);
-                    System.out.println("#Cache is null? call backend, get size  " + finalList.size());
-                }
-            } else {
+            String uniqueKey = simbol + datesearch;
+
+            System.out.println("#call uniqueKey " + uniqueKey);
+
+            List<Quandl> cacheList = (List<Quandl>) cacheHandler.getQuandlListFromCache(uniqueKey);
+
+            System.out.println("#Cache List  " + cacheList);
+
+            if (cacheList != null && !cacheList.isEmpty()) {
                 finalList = new ArrayList<>();
                 finalList.addAll(cacheList);
                 System.out.println("@@get list from cache, size is  " + cacheList.size());
+            } else {
+                System.out.println("#Cache List is NULL DO NEW CALL  ");
+                finalList = this.findList(simbol, uniqueKey);
+                if (!finalList.isEmpty()) {
+                    System.out.println("New data founded: #Put into cache: size is : " + finalList.size());
+                    System.out.println("#put uniqueKey " + uniqueKey);
+                    cacheHandler.putQuandlListToCache(uniqueKey, finalList);
+                    System.out.println("#Cache is null? call backend, get size  " + finalList.size());
+                } else {
+                    System.out.println("No fresh data from quandl");
+                }
             }
 
         } catch (Exception ex) {
