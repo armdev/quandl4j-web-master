@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-
 /**
  *
  * @author armen.arzumanyan@gmail.com
@@ -12,8 +11,8 @@ import java.util.Objects;
 public class Quandl implements Serializable {
 
     private static final long serialVersionUID = 1L;
- 
-    private Long id;   
+
+    private Long id;
     private String date;
     private String open;
     private String high;
@@ -32,8 +31,6 @@ public class Quandl implements Serializable {
     public Quandl() {
     }
 
-   
-   
     public String getSymbol() {
         return symbol;
     }
@@ -41,8 +38,6 @@ public class Quandl implements Serializable {
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
-
-   
 
     public Long getId() {
         return id;
@@ -184,10 +179,7 @@ public class Quandl implements Serializable {
         if (!Objects.equals(this.open, other.open)) {
             return false;
         }
-        if (!Objects.equals(this.high, other.high)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.high, other.high);
     }
 
     @Override

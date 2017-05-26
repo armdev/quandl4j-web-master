@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
@@ -35,8 +36,7 @@ public class CacheHandler implements Serializable {
             InputStream fis = classLoader.getResourceAsStream("ehcache.xml");
             this.manager = CacheManager.create(fis);
             this.userCache = this.manager.getCache("quandl.list.cache");            
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassCastException | IllegalStateException | CacheException e) {
         }
 
     }
@@ -62,8 +62,7 @@ public class CacheHandler implements Serializable {
             if ((elem != null) && (elem.getValue() != null)) {
                 return elem.getValue();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassCastException | IllegalStateException | CacheException e) {
         }
         return null;
     }

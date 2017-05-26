@@ -15,7 +15,7 @@
                 <div class="container">
                     <h:form prependId="false">
                         <p:growl/>
-                         <hr/>
+                        <hr/>
                         <H2>JSF2.2/ehcache/Quandl4j Web</H2>
                         <div class="col-sm-8">
                             <div class="form-group">
@@ -27,8 +27,8 @@
                                     </h:inputText>
                                 </div>
                             </div>    
-                             <div class="form-group">
-                              <hr/>
+                            <div class="form-group">
+                                <hr/>
                             </div> 
                             <div class="form-group">
                                 <label for="concept" class="col-sm-3 control-label">Date start</label>
@@ -37,7 +37,7 @@
                                 </div>
                             </div>    
                             <h:commandButton value="Search"  styleClass="btn btn-danger" action="#{quandlFinderBean.doCall()}"/>
-                             <h:outputText value=" "/>
+                            <h:outputText value=" "/>
                             <h:commandButton value="Clear"  styleClass="btn btn-info" immediate="true" action="#{quandlFinderBean.doClear()}"/>
                         </div>
                         <hr/>
@@ -63,7 +63,7 @@
                                 <p:column headerText="Low">
                                     <h:outputText value="#{list.low}" />
                                 </p:column>
-                                 <p:column headerText="Date">
+                                <p:column headerText="Date">
                                     <h:outputText value="#{list.date}" />
                                 </p:column>
                             </p:dataTable>
