@@ -1,6 +1,8 @@
 # quandl4j-web-master
 quandl4j ehcache support
 
+Apache Tomcat 8/9, ehcache, JSF2.2, Primefaces 6.1, quandl4j
+
 JSF2.2 web application deployed with maven, which support ehcache .
 You can add quandl4j as dependency and create your application.
 You can find already configured ehcache.xml file.
