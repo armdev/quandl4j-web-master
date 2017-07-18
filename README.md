@@ -1,4 +1,8 @@
 # quandl4j-web-master
+
+Quandl is a source of millions of free data sets covering financial, economic, sociological and country data via an open REST API. Quandl4j is a Java 7+ client-side wrapper for this API provided under the commercially friendly Apache V2 license. It provides a type safe and fluent API in a modern style that takes care of constructing URLs and processing JSON and CSV responses but nonetheless allows access to all the functionality of the underlying REST API.
+
+This project is a front end for Quandl and it get stock values and store in the cache.
 quandl4j ehcache support
 
 Apache Tomcat 8/9, ehcache, JSF2.2, Primefaces 6.1, quandl4j
